@@ -2,6 +2,7 @@ package cn.xubitao.dolphin.foundation.assmbler;
 
 import cn.xubitao.dolphin.foundation.resource.ErrorResource;
 import cn.xubitao.dolphin.foundation.resource.RestResource;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import java.util.ArrayList;
@@ -15,21 +16,30 @@ public abstract class DolphinAssembler extends ResourceAssemblerSupport<Object, 
         super(controllerClass, resourceType);
     }
 
-    public abstract RestResource toRestResource(Object o) throws Exception;
+    protected Integer[] pathVariables;
 
-    public RestResource toResource(Object o) {
-        try {
-            return toRestResource(o);
-        } catch (Exception e) {
-            return ErrorResource.error(e.getMessage());
-        }
-    }
-    protected List<RestResource> buildResources(List domains, DolphinAssembler dolphineAssembler) {
-        List<RestResource> providerResources = new ArrayList<RestResource>();
+    public abstract RestResource toRestResource(Object o, Integer... pathVariables) throws Exception;
+
+    protected List<ResourceSupport> buildResources(List domains, DolphinAssembler dolphinAssembler, Integer... pathVariables) {
+        dolphinAssembler.pathVariables = pathVariables;
+        List<ResourceSupport> providerResources = new ArrayList<ResourceSupport>();
         for (Object domain : domains) {
-            RestResource providerResource = dolphineAssembler.toResource(domain);
+            ResourceSupport providerResource = dolphinAssembler.toResource(domain, pathVariables);
             providerResources.add(providerResource);
         }
         return providerResources;
+    }
+
+    public RestResource toResource(Object o) {
+        return null;
+    }
+
+    public ResourceSupport toResource(Object domain, Integer[] pathVariables) {
+        try {
+            this.pathVariables = pathVariables;
+            return toRestResource(domain, pathVariables);
+        } catch (Exception e) {
+            return ErrorResource.error(e.getMessage());
+        }
     }
 }
