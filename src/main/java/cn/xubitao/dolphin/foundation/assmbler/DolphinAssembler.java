@@ -16,11 +16,11 @@ public abstract class DolphinAssembler extends ResourceAssemblerSupport<Object, 
         super(controllerClass, resourceType);
     }
 
-    protected Integer[] pathVariables;
+    protected Object[] pathVariables;
 
-    public abstract RestResource toRestResource(Object o, Integer... pathVariables) throws Exception;
+    public abstract RestResource toRestResource(Object o, Object... pathVariables) throws Exception;
 
-    protected List<ResourceSupport> buildResources(List domains, DolphinAssembler dolphinAssembler, Integer... pathVariables) {
+    protected List<ResourceSupport> buildResources(List domains, DolphinAssembler dolphinAssembler, Object... pathVariables) {
         dolphinAssembler.pathVariables = pathVariables;
         List<ResourceSupport> providerResources = new ArrayList<ResourceSupport>();
         for (Object domain : domains) {
@@ -34,7 +34,7 @@ public abstract class DolphinAssembler extends ResourceAssemblerSupport<Object, 
         return null;
     }
 
-    public ResourceSupport toResource(Object domain, Integer[] pathVariables) {
+    public ResourceSupport toResource(Object domain, Object[] pathVariables) {
         try {
             this.pathVariables = pathVariables;
             return toRestResource(domain, pathVariables);

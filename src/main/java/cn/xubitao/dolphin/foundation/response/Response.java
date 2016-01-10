@@ -40,9 +40,9 @@ public class Response {
         return new ResponseEntity<ResourceSupport>(response.getRestResource(), response.getHttpStatus());
     }
 
-    public static HttpEntity<ResourceSupport> build(Object domain, DolphinAssembler resourceAssembler, Integer... pathVariables) {
+    public static HttpEntity<ResourceSupport> build(Object domain, DolphinAssembler resourceAssembler, Object... pathOrRequestVariables) {
         Response response = new Response();
-        ResourceSupport domainResource = resourceAssembler.toResource(domain, pathVariables);
+        ResourceSupport domainResource = resourceAssembler.toResource(domain, pathOrRequestVariables);
         ResourceSupport resource = new ResourceSupport();
         setResponse(domain, response, domainResource, resource);
         return new ResponseEntity<ResourceSupport>(response.getRestResource(), response.getHttpStatus());
