@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.j256.ormlite</groupId>
-            <artifactId>ormlite-core</artifact
+            <artifactId>ormlite-core</artifactId>
             <version>4.48</version>
         </dependency>
         <dependency>
